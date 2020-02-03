@@ -100,10 +100,12 @@ public class MainActivity extends AppCompatActivity implements MoviesListAdapter
 
     private void showFavoriteMovies() {
         loadingMoviesUI();
-        mAdapter = null;
         mViewModel.getFavoriteMoviesEntities().observe(this, movieEntities -> {
-            if (movieEntities != null) {
+            clearRecyclerView();
+            if (movieEntities != null && movieEntities.size() > 0) {
                 mViewModel.requestFavoriteMoviesByList(movieEntities);
+            } else {
+                setLoadingVisibility(false);
             }
         });
     }
@@ -159,15 +161,13 @@ public class MainActivity extends AppCompatActivity implements MoviesListAdapter
     }
 
     public void updateMoviesByItem(Movie movie) {
-        if (mAdapter == null) {
-            List<Movie> movies = new ArrayList<>();
-            movies.add(movie);
-            mAdapter = new MoviesListAdapter(movies, MainActivity.this);
-        } else {
-            mAdapter.addMovie(movie);
-        }
+        mAdapter.addMovie(movie);
         setRecyclerViewAdapter(mAdapter);
         setLoadingVisibility(false);
+    }
+
+    private void clearRecyclerView() {
+        mAdapter.clear();
     }
 
     public void showError(Throwable error) {

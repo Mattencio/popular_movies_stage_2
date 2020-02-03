@@ -38,6 +38,12 @@ public class MoviesListAdapter extends RecyclerView.Adapter<MoviesListAdapter.Mo
         notifyItemInserted(positionAdded);
     }
 
+    public void clear() {
+        int size = mMoviesList.size();
+        mMoviesList.clear();
+        notifyItemRangeRemoved(0, size);
+    }
+
     @NonNull
     @Override
     public MoviesListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
